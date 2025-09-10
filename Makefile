@@ -3,7 +3,7 @@ default: build
 prepare:
 	pnpm install
 	pnpm husky
-	cp .env.example .env
+	cp -n .env.example .env
 
 build:
 	pnpm tsc
