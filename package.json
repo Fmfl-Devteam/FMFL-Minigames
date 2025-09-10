@@ -3,12 +3,6 @@
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
-    "scripts": {
-        "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
-        "build": "tsc",
-        "clean": "rm -rf dist; rm -rf types",
-        "prepare": "husky"
-    },
     "keywords": [],
     "author": "Fmfl_Felix <felixæfmfl-devteam.de>",
     "license": "ISC",

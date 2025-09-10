@@ -1,2 +1,4 @@
-pnpm format
-pnpm tsc --noEmit
+echo "Running checks..."
+make check || { echo "Checks failed. Commit aborted."; exit 1; }
+
+echo "Pre-commit checks passed."
