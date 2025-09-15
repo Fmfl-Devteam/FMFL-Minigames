@@ -4,7 +4,7 @@ import Client from './MyClient.js'
 export default class ChannelSelectMenuInteraction {
     public id: string
     public execute: (
-        interaction: Discord.StringSelectMenuInteraction,
+        interaction: Discord.ChannelSelectMenuInteraction,
         client: Client
     ) => Promise<void> | void
 

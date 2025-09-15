@@ -1,5 +1,7 @@
 import { GatewayIntentBits } from 'discord.js'
 import { readdirSync } from 'fs'
+import Button from './Contents/Classes/Button'
+import ChannelSelectMenuInteraction from './Contents/Classes/ChannelSelectMenuInteraction'
 import Logger from './Contents/Classes/Logger'
 import MyClient from './Contents/Classes/MyClient'
 import { SlashCommand } from './Contents/Classes/SlashCommand'
@@ -25,6 +27,8 @@ const client = new MyClient({
 })
 const commandFolders = readdirSync(path.join(root, 'Commands'))
 const eventFolders = readdirSync(path.join(root, 'Events'))
+const channelSelectFolders = readdirSync(path.join(root, 'ChannelSelects'))
+const buttonFolders = readdirSync(path.join(root, 'Buttons'))
 
 ;(async () => {
     for (const subFolder of commandFolders) {
@@ -66,6 +70,50 @@ const eventFolders = readdirSync(path.join(root, 'Events'))
                     `Event with name ${event.eventName} from ${file} loaded!`
                 )
                 client.on(event.eventName, (...args) => event.execute(client, ...args))
+            }
+        }
+    }
+})()
+;(async () => {
+    for (const folder of channelSelectFolders) {
+        const channelSelectFiles = readdirSync(path.join(root, 'ChannelSelects', folder))
+        for (const file of channelSelectFiles) {
+            const channelSelect: ChannelSelectMenuInteraction = await import(
+                path.join('./ChannelSelects', folder, file)
+            )
+            if (!channelSelect || !channelSelect.id || !channelSelect.execute) {
+                Logger.warn(
+                    'Channel Select Loader',
+                    `Channel Select from ${file} is missing at least one of the following properties, so skipped: customId | execute`
+                )
+                continue
+            } else {
+                Logger.info(
+                    'Channel Select Loader',
+                    `Channel Select with custom ID ${channelSelect.id} from ${file} loaded!`
+                )
+                client.channelSelects.set(channelSelect.id, channelSelect)
+            }
+        }
+    }
+})()
+;(async () => {
+    for (const folder of buttonFolders) {
+        const buttonFiles = readdirSync(path.join(root, 'Buttons', folder))
+        for (const file of buttonFiles) {
+            const button: Button = await import(path.join('./Buttons', folder, file))
+            if (!button || !button.id || !button.execute) {
+                Logger.warn(
+                    'Button Loader',
+                    `Button from ${file} is missing at least one of the following properties, so skipped: customId | execute`
+                )
+                continue
+            } else {
+                Logger.info(
+                    'Button Loader',
+                    `Button with custom ID ${button.id} from ${file} loaded!`
+                )
+                client.buttons.set(button.id, button)
             }
         }
     }
