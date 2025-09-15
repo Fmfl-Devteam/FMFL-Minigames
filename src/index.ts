@@ -14,12 +14,13 @@ const client = new MyClient({
     ]
 })
 const commandFolders = readdirSync(path.join(root, 'Commands'))
+const eventFolders = readdirSync(path.join(root, 'Events'))
 
 ;(async () => {
     for (const subFolder of commandFolders) {
         const commandFiles = readdirSync(path.join(root, 'Commands', subFolder))
         for (const file of commandFiles) {
-            const command: SlashCommand = await import(path.join(root, 'Commands', subFolder, file))
+            const command: SlashCommand = await import(path.join('./Commands', subFolder, file))
             if (
                 !command.data ||
                 !command.data.name ||
@@ -38,3 +39,24 @@ const commandFolders = readdirSync(path.join(root, 'Commands'))
         }
     }
 })()
+;async () => {
+    for (const folder of eventFolders) {
+        const eventFiles = readdirSync(path.join(root, 'Events', folder))
+        for (const file of eventFiles) {
+            const event = await import(path.join('./Events', folder, file))
+            if (!event || !event.eventName || !event.execute) {
+                Logger.warn(
+                    'Event Loader',
+                    `Event from ${file} is missing at least one of the following properties, so skipped: eventName | execute`
+                )
+                continue
+            } else {
+                Logger.info(
+                    'Event Loader',
+                    `Event with name ${event.eventName} from ${file} loaded!`
+                )
+                client.on(event.eventName, (...args) => event.execute(client, ...args))
+            }
+        }
+    }
+}
