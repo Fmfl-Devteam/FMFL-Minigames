@@ -49,7 +49,7 @@ const eventFolders = readdirSync(path.join(root, 'Events'))
         }
     }
 })()
-;async () => {
+;(async () => {
     for (const folder of eventFolders) {
         const eventFiles = readdirSync(path.join(root, 'Events', folder))
         for (const file of eventFiles) {
@@ -69,4 +69,4 @@ const eventFolders = readdirSync(path.join(root, 'Events'))
             }
         }
     }
-}
+})()
