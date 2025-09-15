@@ -18,7 +18,7 @@ Thank you for your interest in contributing to the FMFL-Minigames project! We we
 ### Code Contributions
 
 - Fork the repository.
-- Run `make prepare` to init husky
+- Run `make prepare`
 - Create a new branch for your feature or bug fix.
 - Submit a Pull Request; we'll review and provide feedback before merging.
 
