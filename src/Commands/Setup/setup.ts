@@ -3,6 +3,7 @@ import {
     ChannelType,
     ComponentType,
     InteractionContextType,
+    PermissionFlagsBits,
     SeparatorSpacingSize,
     SlashCommandBuilder
 } from 'discord.js'
@@ -11,6 +12,7 @@ import { SlashCommand } from '../../Contents/Classes/SlashCommand'
 
 export default new SlashCommand({
     data: new SlashCommandBuilder()
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .setContexts(InteractionContextType.Guild)
         .setIntegrationTypes(ApplicationIntegrationType.GuildInstall)
         .setName('setup')
