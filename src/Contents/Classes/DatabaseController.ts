@@ -1,10 +1,12 @@
 import { createPool, Pool, PoolConfig, PoolConnection } from 'mariadb'
+import Logger from './Logger'
 
 export default class DatabaseController {
     private pool: Pool
 
     public constructor(config: PoolConfig) {
         this.pool = createPool(config)
+        Logger.info('DatabaseController', 'Database connection pool created.')
     }
 
     public query<T>(query: string, params?: any[]): Promise<T[]> {

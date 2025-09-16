@@ -31,7 +31,14 @@ export default new EventHandler({
                         }
                     ]
                 }).build()
-                void message.reply({ components: [container] })
+                const msg = await message.reply({
+                    components: [container],
+                    flags: 'IsComponentsV2'
+                })
+                setTimeout(() => {
+                    void message.delete().catch(() => {})
+                    void msg.delete().catch(() => {})
+                }, 3000)
             } else {
                 await client.db.query(
                     `UPDATE Counting SET lastUserId = ?, counter = ? WHERE guildId = ?`,
@@ -41,10 +48,6 @@ export default new EventHandler({
                     await client.db.query(
                         'INSERT INTO CountingUsers (guildId, userId, correctCount) VALUES (?, ?, 1) ON DUPLICATE KEY UPDATE correctCount = correctCount + 1',
                         [message.guild.id, message.author.id]
-                    )
-                    await client.db.query(
-                        'UPDATE Counting SET counter = counter + 1 WHERE guildId = ?',
-                        [message.guild.id]
                     )
                     await message.react('✅')
                 } else {
@@ -65,7 +68,7 @@ export default new EventHandler({
                         [message.guild.id, message.author.id]
                     )
                     await message.react('❌')
-                    void message.reply({ components: [container] })
+                    void message.reply({ components: [container], flags: 'IsComponentsV2' })
                 }
             }
         }
