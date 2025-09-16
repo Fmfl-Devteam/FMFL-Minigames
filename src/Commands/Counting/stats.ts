@@ -36,6 +36,7 @@ export default new SlashCommand({
                 )
         ),
     async execute(interaction, client) {
+        if (!interaction.inCachedGuild()) return
         const subcommandGroup = interaction.options.getSubcommandGroup()
         const subcommand = interaction.options.getSubcommand()
         switch (subcommandGroup) {

@@ -6,6 +6,7 @@ import { CountingDatabaseEntry } from '../../Contents/types'
 export default new EventHandler({
     eventName: 'messageCreate',
     async execute(client, message) {
+        if (!message.inGuild()) return
         const countingChannelId = (
             await client.db.query<Pick<CountingDatabaseEntry, 'channelId'>>(
                 'SELECT channelId FROM Counting WHERE guildId = ?',

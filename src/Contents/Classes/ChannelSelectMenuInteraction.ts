@@ -6,7 +6,7 @@ export default class ChannelSelectMenuInteraction {
     public execute: (
         interaction: Discord.ChannelSelectMenuInteraction,
         client: Client
-    ) => Promise<void> | void
+    ) => MaybePromise<void>
 
     public constructor(options: ChannelSelectMenuInteraction) {
         this.id = options.id

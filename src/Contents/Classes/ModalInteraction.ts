@@ -6,7 +6,7 @@ export default class ModalInteraction {
     public execute: (
         interaction: Discord.ModalSubmitInteraction,
         client: Client
-    ) => Promise<void> | void
+    ) => MaybePromise<void>
 
     public constructor(options: ModalInteraction) {
         this.id = options.id

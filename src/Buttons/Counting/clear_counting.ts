@@ -6,6 +6,7 @@ import { CountingDatabaseEntry } from '../../Contents/types'
 export default new Button({
     id: 'clear_counting_channel',
     async execute(interaction, client) {
+        if (!interaction.inCachedGuild() || !interaction.channel) return
         const member = interaction.member as GuildMember
         if (!member.permissionsIn(interaction.channel).has(PermissionFlagsBits.ManageMessages)) {
             const container = new Container({

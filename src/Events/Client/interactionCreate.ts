@@ -26,8 +26,9 @@ export default new EventHandler({
                 } else {
                     try {
                         void command.execute(interaction, client)
-                    } catch (error) {
-                        Logger.error(`Command "${command.data.name}"`, error)
+                    } catch (error: unknown) {
+                        const err = error as Error
+                        Logger.error(`Command "${command.data.name}"`, err.message, err.stack ?? '')
                         const container = new Container({
                             components: [
                                 {
@@ -72,7 +73,12 @@ export default new EventHandler({
                     try {
                         void channelSelect.execute(interaction, client)
                     } catch (error) {
-                        Logger.error(`Channel Select Menu "${channelSelect.id}"`, error)
+                        const err = error as Error
+                        Logger.error(
+                            `Channel Select Menu "${channelSelect.id}"`,
+                            err.message,
+                            err.stack ?? ''
+                        )
                         const container = new Container({
                             components: [
                                 {
@@ -117,7 +123,8 @@ export default new EventHandler({
                     try {
                         void button.execute(interaction, client)
                     } catch (error) {
-                        Logger.error(`Button "${button.id}"`, error)
+                        const err = error as Error
+                        Logger.error(`Button "${button.id}"`, err.message, err.stack ?? '')
                         const container = new Container({
                             components: [
                                 {

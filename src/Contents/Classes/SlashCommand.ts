@@ -9,8 +9,8 @@ export class SlashCommand {
     public data: TCommandBuilder
     public execute: (
         interaction: Discord.ChatInputCommandInteraction,
-        client?: Client
-    ) => Promise<void> | void
+        client: Client
+    ) => MaybePromise<void>
 
     public constructor(options: SlashCommand) {
         this.data = options.data
