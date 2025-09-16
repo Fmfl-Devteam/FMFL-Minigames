@@ -1,4 +1,4 @@
-import { ComponentType, GuildMember, PermissionFlagsBits, TextChannel } from 'discord.js'
+import { Colors, ComponentType, GuildMember, PermissionFlagsBits, TextChannel } from 'discord.js'
 import Button from '../../Contents/Classes/Button'
 import Container from '../../Contents/Classes/Container'
 import { CountingDatabaseEntry } from '../../Contents/types'
@@ -9,6 +9,7 @@ export default new Button({
         const member = interaction.member as GuildMember
         if (!member.permissionsIn(interaction.channel).has(PermissionFlagsBits.ManageMessages)) {
             const container = new Container({
+                accent_color: Colors.Red,
                 components: [
                     {
                         type: ComponentType.TextDisplay,
@@ -24,6 +25,7 @@ export default new Button({
         }
         if (client.activeServices.get('countingClear')) {
             const container = new Container({
+                accent_color: Colors.Yellow,
                 components: [
                     {
                         type: ComponentType.TextDisplay,
@@ -54,6 +56,7 @@ export default new Button({
                 )[0]?.counter || 0
 
             const container = new Container({
+                accent_color: Colors.Green,
                 components: [
                     {
                         type: ComponentType.TextDisplay,

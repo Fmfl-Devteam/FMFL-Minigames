@@ -9,6 +9,7 @@ import {
 } from 'discord.js'
 import Container from '../../Contents/Classes/Container'
 import { SlashCommand } from '../../Contents/Classes/SlashCommand'
+import COLORS from '../../Contents/Constants/COLORS'
 
 export default new SlashCommand({
     data: new SlashCommandBuilder()
@@ -24,6 +25,7 @@ export default new SlashCommand({
         switch (subcommand) {
             case 'counting': {
                 const container = new Container({
+                    accent_color: COLORS.fmfl_blue,
                     components: [
                         {
                             type: ComponentType.TextDisplay,

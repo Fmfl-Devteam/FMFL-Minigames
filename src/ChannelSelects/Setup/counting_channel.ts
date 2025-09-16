@@ -1,6 +1,7 @@
 import { ButtonStyle, ComponentType, TextChannel } from 'discord.js'
 import ChannelSelectMenuInteraction from '../../Contents/Classes/ChannelSelectMenuInteraction'
 import Container from '../../Contents/Classes/Container'
+import COLORS from '../../Contents/Constants/COLORS'
 
 export default new ChannelSelectMenuInteraction({
     id: 'setup_counting_channel',
@@ -19,6 +20,7 @@ export default new ChannelSelectMenuInteraction({
             [guild.id, channelid, '0', channelid]
         )
         const container = new Container({
+            accent_color: COLORS.fmfl_blue,
             components: [
                 {
                     type: ComponentType.TextDisplay,
@@ -41,10 +43,11 @@ export default new ChannelSelectMenuInteraction({
         const message = await channel.send({ components: [container], flags: 'IsComponentsV2' })
         await message.pin()
         const replyContainer = new Container({
+            accent_color: COLORS.fmfl_blue,
             components: [
                 {
                     type: ComponentType.TextDisplay,
-                    content: `Successfully set <#${channelid}> as the counting channel!`
+                    content: `## Counting Minigame Setup\nSuccessfully set <#${channelid}> as the counting channel!`
                 }
             ]
         }).build()

@@ -1,11 +1,13 @@
 import {
     ApplicationIntegrationType,
+    Colors,
     ComponentType,
     InteractionContextType,
     SlashCommandBuilder
 } from 'discord.js'
 import Container from '../../Contents/Classes/Container'
 import { SlashCommand } from '../../Contents/Classes/SlashCommand'
+import COLORS from '../../Contents/Constants/COLORS'
 import { CountingUserData } from '../../Contents/types'
 
 export default new SlashCommand({
@@ -51,6 +53,7 @@ export default new SlashCommand({
                         )[0]
                         if (!countingData) {
                             const container = new Container({
+                                accent_color: Colors.Orange,
                                 components: [
                                     {
                                         type: ComponentType.TextDisplay,
@@ -65,6 +68,7 @@ export default new SlashCommand({
                             })
                         } else {
                             const container = new Container({
+                                accent_color: COLORS.fmfl_blue,
                                 components: [
                                     {
                                         type: ComponentType.TextDisplay,
@@ -91,6 +95,7 @@ export default new SlashCommand({
                         )
                         console.log(countingData)
                         const container = new Container({
+                            accent_color: COLORS.fmfl_blue,
                             components: [
                                 {
                                     type: ComponentType.TextDisplay,
