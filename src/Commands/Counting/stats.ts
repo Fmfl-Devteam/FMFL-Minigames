@@ -58,7 +58,11 @@ export default new SlashCommand({
                                     }
                                 ]
                             }).build()
-                            void interaction.reply({ components: [container] })
+                            void interaction.reply({
+                                components: [container],
+                                flags: 'IsComponentsV2',
+                                allowedMentions: { parse: [] }
+                            })
                         } else {
                             const container = new Container({
                                 components: [
@@ -68,23 +72,29 @@ export default new SlashCommand({
                                     }
                                 ]
                             }).build()
-                            void interaction.reply({ components: [container] })
+                            void interaction.reply({
+                                components: [container],
+                                flags: 'IsComponentsV2',
+                                allowedMentions: { parse: [] }
+                            })
                         }
                         break
                     }
 
                     case 'guild': {
-                        const countingData = await client.db.query<
-                            Pick<CountingUserData, 'correctCount' | 'wrongCount'>
-                        >(
+                        const countingData = await client.db.query<{
+                            correctCount: string
+                            wrongCount: string
+                        }>(
                             'SELECT SUM(correctCount) as correctCount, SUM(wrongCount) as wrongCount FROM CountingUsers WHERE guildId = ?',
                             [interaction.guild.id]
                         )
+                        console.log(countingData)
                         const container = new Container({
                             components: [
                                 {
                                     type: ComponentType.TextDisplay,
-                                    content: `## Counting Minigame Stats\n\n**Total Correct Counts:** ${countingData[0].correctCount ?? 0}\n**Total Wrong Counts:** ${countingData[0].wrongCount ?? 0}\n**Total Counts:** ${(countingData[0].correctCount ?? 0) + (countingData[0].wrongCount ?? 0)}`
+                                    content: `## Counting Minigame Stats\n\n**Total Correct Counts:** ${countingData[0].correctCount ?? 0}\n**Total Wrong Counts:** ${countingData[0].wrongCount ?? 0}\n**Total Counts:** ${(parseInt(countingData[0].correctCount) ?? 0) + (parseInt(countingData[0].wrongCount) ?? 0)}`
                                 }
                             ]
                         }).build()

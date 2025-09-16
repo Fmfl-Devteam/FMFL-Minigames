@@ -9,7 +9,7 @@ export default class Container extends ContainerBuilder {
         this.addSeparatorComponents((s) => s.setSpacing(SeparatorSpacingSize.Large))
         this.addTextDisplayComponents((text) =>
             text.setContent(
-                'Powered by Fmfl Devteam [Discord](<https://discord.fmfl-devteam.de>) [Website](<https://fmfl-devteam.de>)'
+                'Powered by Fmfl Devteam\n[Discord](<https://discord.fmfl-devteam.de>) | [Website](<https://fmfl-devteam.de>)'
             )
         )
         return this.toJSON()
