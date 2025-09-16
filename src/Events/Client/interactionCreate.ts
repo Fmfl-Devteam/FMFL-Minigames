@@ -98,6 +98,7 @@ export default new EventHandler({
                 break
             }
             case interaction.isButton(): {
+                if (interaction.customId.startsWith('internal_')) return
                 const button = client.buttons.get(interaction.customId)
                 if (!button) {
                     const container = new Container({
