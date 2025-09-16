@@ -31,7 +31,8 @@ export default new ChannelSelectMenuInteraction({
                         {
                             type: ComponentType.Button,
                             style: ButtonStyle.Danger,
-                            custom_id: 'clear_counting_channel'
+                            custom_id: 'clear_counting_channel',
+                            label: 'Clear Counting Channel'
                         }
                     ]
                 }

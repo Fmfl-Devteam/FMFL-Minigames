@@ -4,3 +4,9 @@ export type CountingDatabaseEntry = {
     lastUserId: string
     counter: number
 }
+export type CountingUserData = {
+    userId: string
+    guildId: string
+    correctCount: number
+    wrongCount: number
+}

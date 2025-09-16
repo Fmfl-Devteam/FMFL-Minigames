@@ -53,7 +53,7 @@ export default new EventHandler({
                 break
             }
             case interaction.isChannelSelectMenu(): {
-                const channelSelect = client.channelSelectMenus.get(interaction.customId)
+                const channelSelect = client.channelSelects.get(interaction.customId)
                 if (!channelSelect) {
                     const container = new Container({
                         components: [

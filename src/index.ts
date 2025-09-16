@@ -34,7 +34,7 @@ const buttonFolders = readdirSync(path.join(root, 'Buttons'))
     for (const subFolder of commandFolders) {
         const commandFiles = readdirSync(path.join(root, 'Commands', subFolder))
         for (const file of commandFiles) {
-            const command: SlashCommand = await import(path.join('./Commands', subFolder, file))
+            const command: SlashCommand = (await import(`./Commands/${subFolder}/${file}`)).default
             if (
                 !command.data ||
                 !command.data.name ||
@@ -57,7 +57,7 @@ const buttonFolders = readdirSync(path.join(root, 'Buttons'))
     for (const folder of eventFolders) {
         const eventFiles = readdirSync(path.join(root, 'Events', folder))
         for (const file of eventFiles) {
-            const event = await import(path.join('./Events', folder, file))
+            const event = (await import(`./Events/${folder}/${file}`)).default
             if (!event || !event.eventName || !event.execute) {
                 Logger.warn(
                     'Event Loader',
@@ -78,9 +78,9 @@ const buttonFolders = readdirSync(path.join(root, 'Buttons'))
     for (const folder of channelSelectFolders) {
         const channelSelectFiles = readdirSync(path.join(root, 'ChannelSelects', folder))
         for (const file of channelSelectFiles) {
-            const channelSelect: ChannelSelectMenuInteraction = await import(
-                path.join('./ChannelSelects', folder, file)
-            )
+            const channelSelect: ChannelSelectMenuInteraction = (
+                await import(`./ChannelSelects/${folder}/${file}`)
+            ).default
             if (!channelSelect || !channelSelect.id || !channelSelect.execute) {
                 Logger.warn(
                     'Channel Select Loader',
@@ -101,7 +101,7 @@ const buttonFolders = readdirSync(path.join(root, 'Buttons'))
     for (const folder of buttonFolders) {
         const buttonFiles = readdirSync(path.join(root, 'Buttons', folder))
         for (const file of buttonFiles) {
-            const button: Button = await import(path.join('./Buttons', folder, file))
+            const button: Button = (await import(`./Buttons/${folder}/${file}`)).default
             if (!button || !button.id || !button.execute) {
                 Logger.warn(
                     'Button Loader',
@@ -118,3 +118,8 @@ const buttonFolders = readdirSync(path.join(root, 'Buttons'))
         }
     }
 })()
+
+client.login(process.env.TOKEN).catch((err) => {
+    Logger.error('Client', `Failed to log in: ${err}`)
+    process.exit(1)
+})
