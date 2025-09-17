@@ -1,5 +1,5 @@
 import { ComponentType, SeparatorSpacingSize, SlashCommandBuilder } from 'discord.js'
-import { workPhrases } from '../../../Storage/economy_phrases.json'
+import { begPhrases, workPhrases } from '../../../Storage/economy_phrases.json'
 import Container from '../../Contents/Classes/Container'
 import { SlashCommand } from '../../Contents/Classes/SlashCommand'
 import { EconomyUserData } from '../../Contents/types'
@@ -9,9 +9,8 @@ export default new SlashCommand({
         .setName('economy')
         .setDescription('Economy Commands')
         .addSubcommand((cmd) => cmd.setName('balance').setDescription('Show your balance'))
-        .addSubcommand((cmd) =>
-            cmd.setName('work').setDescription('Work for a little extra money')
-        ),
+        .addSubcommand((cmd) => cmd.setName('work').setDescription('Work for a little extra money'))
+        .addSubcommand((cmd) => cmd.setName('beg').setDescription("I'm beggin, beggin you")),
 
     async execute(interaction, client) {
         if (!interaction.inGuild() || !interaction.inCachedGuild()) return
@@ -108,16 +107,45 @@ export default new SlashCommand({
                 void interaction.reply({ components: [container], flags: 'IsComponentsV2' })
                 break
             }
+            case 'beg': {
+                const reward = calculateBegReward()
+
+                const container = new Container({
+                    components: [
+                        {
+                            type: ComponentType.TextDisplay,
+                            content: `## Fmfl Economy\n${reward < 0 ? `${begPhrases.loss[Math.floor(Math.random() * begPhrases.loss.length)]}` : `${begPhrases.gain[Math.floor(Math.random() * begPhrases.gain.length)]}`}`
+                        }
+                    ]
+                }).build()
+
+                await client.db.query(
+                    'INSERT INTO EconomyUsers (userId, guildId, balance, inventory, workStreak, lastWork) VALUES (?,?,?,?,?,?) ON DUPLICATE KEY UPDATE balance = balance + VALUES(balance), workStreak = VALUES(workStreak), lastWork = VALUES(lastWork)',
+                    [interaction.user.id, interaction.guild.id, reward, '{}', 0, 0]
+                )
+
+                void interaction.reply({ components: [container], flags: 'IsComponentsV2' })
+                break
+            }
         }
     }
 })
 
 function calculateWorkReward(workStreak: number) {
-    const minBase = 20
-    const maxBase = 100
+    const minBase = 50
+    const maxBase = 200
 
     const baseReward = Math.floor(Math.random() * (maxBase - minBase + 1)) + minBase
 
     const streakMultiplier = 1 + (workStreak - 1) * 0.02
     return Math.floor(baseReward * streakMultiplier)
+}
+
+function calculateBegReward() {
+    const minBase = 10
+    const maxBase = 50
+
+    const reward = Math.floor(Math.random() * (maxBase - minBase + 1)) + minBase
+    // 30% chance to lose money instead of gain it
+    return Math.random() < 0.3 ? -reward : reward
 }
