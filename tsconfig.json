@@ -6,6 +6,7 @@
         "outDir": "./dist",
         "moduleResolution": "node",
         "lib": ["ESNext"],
-        "strict": true
+        "strict": true,
+        "resolveJsonModule": true
     }
 }
