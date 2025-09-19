@@ -16,12 +16,6 @@ export type EconomyUserData = {
     balance: number
     inventory: string
     workStreak: number
-    /**
-     * Stores a Date with following format YYYY-MM-DD
-     * @example
-     * 2025-09-16
-     * 2025-04-25
-     */
 }
 export type EconomyLastExecute = {
     userId: string
