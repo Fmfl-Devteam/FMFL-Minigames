@@ -2,7 +2,8 @@ import { ComponentType, SeparatorSpacingSize, SlashCommandBuilder } from 'discor
 import { begPhrases, workPhrases } from '../../../Storage/economy_phrases.json'
 import Container from '../../Contents/Classes/Container'
 import { SlashCommand } from '../../Contents/Classes/SlashCommand'
-import { EconomyUserData } from '../../Contents/types'
+import COOLDOWNS from '../../Contents/Constants/COOLDOWNS'
+import { EconomyLastExecute, EconomyUserData } from '../../Contents/types'
 
 export default new SlashCommand({
     data: new SlashCommandBuilder()
@@ -18,14 +19,17 @@ export default new SlashCommand({
         switch (subcommand) {
             case 'work': {
                 const userData = (
-                    await client.db.query<
-                        Pick<EconomyUserData, 'balance' | 'workStreak' | 'lastWork'>
-                    >(
+                    await client.db.query<Pick<EconomyUserData, 'balance' | 'workStreak'>>(
                         'SELECT balance,workStreak,lastWork FROM EconomyUsers WHERE guildId = ? AND userId = ?',
                         [interaction.guild.id, interaction.user.id]
                     )
                 )[0]
-                const lastWorkDate = new Date(userData.lastWork)
+                const lastExecuteEntries = await client.db.query<Pick<EconomyLastExecute, 'work'>>(
+                    'SELECT work FROM EconomyLastExecutes WHERE guildId = ? AND userId = ?',
+                    [interaction.guild.id, interaction.user.id]
+                )
+                const lastExecute = lastExecuteEntries[0]
+                const lastWorkDate = new Date(lastExecute.work)
                 const now = new Date()
                 if (lastWorkDate.toDateString() !== now.toDateString()) {
                     const yesterday = new Date(now)
@@ -53,18 +57,14 @@ export default new SlashCommand({
                 }
                 const salary = calculateWorkReward(userData.workStreak)
                 const workPhrase = workPhrases[Math.floor(Math.random() * workPhrases.length)]
-
-                const formattedDate = now.toISOString().split('T')[0]
                 await client.db.query(
-                    'INSERT INTO EconomyUsers (userId, guildId, balance, inventory, workStreak, lastWork) VALUES (?,?,?,?,?,?) ON DUPLICATE KEY UPDATE balance = balance + VALUES(balance), workStreak = VALUES(workStreak), lastWork = VALUES(lastWork)',
-                    [
-                        interaction.user.id,
-                        interaction.guild.id,
-                        salary,
-                        '{}',
-                        userData.workStreak,
-                        formattedDate
-                    ]
+                    'INSERT INTO EconomyUsers (userId, guildId, balance, inventory, workStreak) VALUES (?,?,?,?,?) ON DUPLICATE KEY UPDATE balance = balance + VALUES(balance), workStreak = VALUES(workStreak)',
+                    [interaction.user.id, interaction.guild.id, salary, '{}', userData.workStreak]
+                )
+
+                await client.db.query(
+                    'INSERT INTO EconomyLastExecutes (userId, guildId, work) VALUES (?,?,?) ON DUPLICATE KEY UPDATE work = VALUES(work)',
+                    [interaction.user.id, interaction.guild.id, now.getTime()]
                 )
 
                 const container = new Container({
@@ -108,6 +108,34 @@ export default new SlashCommand({
                 break
             }
             case 'beg': {
+                const lastExecuteEntries = await client.db.query<Pick<EconomyLastExecute, 'beg'>>(
+                    'SELECT beg FROM EconomyLastExecutes WHERE userId = ? AND guildId = ?',
+                    [interaction.user.id, interaction.guild.id]
+                )
+                const lastExecute = lastExecuteEntries[0]
+                const now = Date.now()
+                if (lastExecute && now - lastExecute.beg < COOLDOWNS.beg) {
+                    const remaining = COOLDOWNS.beg - (now - lastExecute.beg)
+                    const minutes = Math.floor(remaining / 60_000)
+                    const seconds = Math.floor((remaining % 60_000) / 1000)
+                    const container = new Container({
+                        components: [
+                            {
+                                type: ComponentType.TextDisplay,
+                                content: `## Fmfl Economy\nYou are begging too much! Please wait ${minutes} minute(s) and ${seconds} second(s) before begging again.`
+                            }
+                        ]
+                    }).build()
+                    return void interaction.reply({
+                        components: [container],
+                        flags: 'IsComponentsV2'
+                    })
+                }
+
+                await client.db.query(
+                    'INSERT INTO EconomyLastExecutes (userId, guildId, beg) VALUES (?,?,?) ON DUPLICATE KEY UPDATE beg = VALUES(beg)',
+                    [interaction.user.id, interaction.guild.id, now]
+                )
                 const reward = calculateBegReward()
 
                 const container = new Container({

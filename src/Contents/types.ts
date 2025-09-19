@@ -22,5 +22,11 @@ export type EconomyUserData = {
      * 2025-09-16
      * 2025-04-25
      */
-    lastWork: string
+}
+export type EconomyLastExecute = {
+    userId: string
+    guildId: string
+    beg: number
+    work: number
+    crime: number
 }
