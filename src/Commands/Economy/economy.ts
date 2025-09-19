@@ -20,7 +20,7 @@ export default new SlashCommand({
             case 'work': {
                 const userData = (
                     await client.db.query<Pick<EconomyUserData, 'balance' | 'workStreak'>>(
-                        'SELECT balance,workStreak,lastWork FROM EconomyUsers WHERE guildId = ? AND userId = ?',
+                        'SELECT balance,workStreak FROM EconomyUsers WHERE guildId = ? AND userId = ?',
                         [interaction.guild.id, interaction.user.id]
                     )
                 )[0]
