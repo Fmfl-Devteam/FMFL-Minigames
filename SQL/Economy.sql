@@ -6,7 +6,7 @@ CREATE TABLE `EconomyUserData` (
   `inventory` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`inventory`)),
   `workStreak` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`userId`,`guildId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
 CREATE TABLE `EconomyLastExecutes` (
   `userId` varchar(25) NOT NULL,
