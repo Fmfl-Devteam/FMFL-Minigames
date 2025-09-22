@@ -11,6 +11,7 @@ export default new SlashCommand({
         .setDescription('Economy Commands')
         .addSubcommand((cmd) => cmd.setName('balance').setDescription('Show your balance'))
         .addSubcommand((cmd) => cmd.setName('work').setDescription('Work for a little extra money'))
+        .addSubcommand((cmd) => cmd.setName('crime').setDescription('Commit a crime for money'))
         .addSubcommand((cmd) => cmd.setName('beg').setDescription("I'm beggin, beggin you"))
         .addSubcommand((cmd) => cmd.setName('bank').setDescription('Manage your bank account')),
 
@@ -90,6 +91,53 @@ export default new SlashCommand({
                         }
                     ]
                 }).build()
+
+                void interaction.reply({ components: [container], flags: 'IsComponentsV2' })
+                break
+            }
+            case 'crime': {
+                const lastExecuteEntries = await client.db.query<Pick<EconomyLastExecute, 'crime'>>(
+                    'SELECT crime FROM EconomyLastExecutes WHERE userId = ? AND guildId = ?',
+                    [interaction.user.id, interaction.guild.id]
+                )
+                const lastExecute = lastExecuteEntries[0]
+                const now = Date.now()
+                if (lastExecute && now - lastExecute.crime < COOLDOWNS.crime) {
+                    const remaining = COOLDOWNS.crime - (now - lastExecute.crime)
+                    const minutes = Math.floor(remaining / 60_000)
+                    const seconds = Math.floor((remaining % 60_000) / 1000)
+                    const container = new Container({
+                        components: [
+                            {
+                                type: ComponentType.TextDisplay,
+                                content: `## Fmfl Economy\nYou are committing crimes too often! Please wait ${minutes} minute(s) and ${seconds} second(s) before committing another crime.`
+                            }
+                        ]
+                    }).build()
+                    return void interaction.reply({
+                        components: [container],
+                        flags: 'IsComponentsV2'
+                    })
+                }
+
+                await client.db.query(
+                    'INSERT INTO EconomyLastExecutes (userId, guildId, crime) VALUES (?,?,?) ON DUPLICATE KEY UPDATE crime = VALUES(crime)',
+                    [interaction.user.id, interaction.guild.id, now]
+                )
+                const reward = calculateCrimeReward()
+                const container = new Container({
+                    components: [
+                        {
+                            type: ComponentType.TextDisplay,
+                            content: `## Fmfl Economy\nYou committed a crime and ${reward < 0 ? 'lost' : 'gained'} 🪙 ${Math.abs(reward)}!`
+                        }
+                    ]
+                }).build()
+
+                await client.db.query(
+                    'INSERT INTO EconomyUserData (userId, guildId, balance, inventory) VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE balance = balance + VALUES(balance)',
+                    [interaction.user.id, interaction.guild.id, reward, '{}']
+                )
 
                 void interaction.reply({ components: [container], flags: 'IsComponentsV2' })
                 break
@@ -259,6 +307,14 @@ function calculateBegReward() {
     const reward = Math.floor(Math.random() * (maxBase - minBase + 1)) + minBase
     // 30% chance to lose money instead of gain it
     return Math.random() < 0.3 ? -reward : reward
+}
+
+function calculateCrimeReward() {
+    const minBase = 100
+    const maxBase = 500
+
+    const reward = Math.floor(Math.random() * (maxBase - minBase + 1)) + minBase
+    return Math.random() < 0.5 ? -reward : reward
 }
 
 function getBegPhrase(reward: number) {
