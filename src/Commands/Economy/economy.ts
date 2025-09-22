@@ -21,7 +21,7 @@ export default new SlashCommand({
             case 'work': {
                 const userData = (
                     await client.db.query<Pick<EconomyUserData, 'balance' | 'workStreak'>>(
-                        'SELECT balance,workStreak FROM EconomyUsers WHERE guildId = ? AND userId = ?',
+                        'SELECT balance,workStreak FROM EconomyUserData WHERE guildId = ? AND userId = ?',
                         [interaction.guild.id, interaction.user.id]
                     )
                 )[0]
@@ -59,7 +59,7 @@ export default new SlashCommand({
                 const salary = calculateWorkReward(userData.workStreak)
                 const workPhrase = workPhrases[Math.floor(Math.random() * workPhrases.length)]
                 await client.db.query(
-                    'INSERT INTO EconomyUsers (userId, guildId, balance, inventory, workStreak) VALUES (?,?,?,?,?) ON DUPLICATE KEY UPDATE balance = balance + VALUES(balance), workStreak = VALUES(workStreak)',
+                    'INSERT INTO EconomyUserData (userId, guildId, balance, inventory, workStreak) VALUES (?,?,?,?,?) ON DUPLICATE KEY UPDATE balance = balance + VALUES(balance), workStreak = VALUES(workStreak)',
                     [interaction.user.id, interaction.guild.id, salary, '{}', userData.workStreak]
                 )
 
@@ -91,7 +91,7 @@ export default new SlashCommand({
             case 'balance': {
                 const userData = (
                     await client.db.query<Pick<EconomyUserData, 'balance'>>(
-                        'SELECT balance FROM EconomyUsers WHERE userId = ? AND guildId = ?',
+                        'SELECT balance FROM EconomyUserData WHERE userId = ? AND guildId = ?',
                         [interaction.user.id, interaction.guild.id]
                     )
                 )[0]
@@ -149,7 +149,7 @@ export default new SlashCommand({
                 }).build()
 
                 await client.db.query(
-                    'INSERT INTO EconomyUsers (userId, guildId, balance, inventory, workStreak) VALUES (?,?,?,?,?) ON DUPLICATE KEY UPDATE balance = balance + VALUES(balance), workStreak = VALUES(workStreak)',
+                    'INSERT INTO EconomyUserData (userId, guildId, balance, inventory, workStreak) VALUES (?,?,?,?,?) ON DUPLICATE KEY UPDATE balance = balance + VALUES(balance), workStreak = VALUES(workStreak)',
                     [interaction.user.id, interaction.guild.id, reward, '{}', 0]
                 )
 
@@ -158,7 +158,7 @@ export default new SlashCommand({
             }
             case 'bank': {
                 const balance = await client.db.query<Pick<EconomyUserData, 'bankBalance'>>(
-                    'SELECT bankBalance FROM EconomyUsers WHERE userId = ? AND guildId = ?',
+                    'SELECT bankBalance FROM EconomyUserData WHERE userId = ? AND guildId = ?',
                     [interaction.user.id, interaction.guild.id]
                 )
 

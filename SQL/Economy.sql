@@ -1,4 +1,4 @@
-CREATE TABLE `EconomyUsers` (
+CREATE TABLE `EconomyUserData` (
   `userId` varchar(25) NOT NULL,
   `guildId` varchar(25) NOT NULL,
   `balance` int(11) NOT NULL DEFAULT 0,
