@@ -19,24 +19,30 @@ export default new SlashCommand({
         const subcommand = interaction.options.getSubcommand()
         switch (subcommand) {
             case 'work': {
-                const userData = (
+                let userData = (
                     await client.db.query<Pick<EconomyUserData, 'balance' | 'workStreak'>>(
-                        'SELECT balance,workStreak FROM EconomyUserData WHERE guildId = ? AND userId = ?',
-                        [interaction.guild.id, interaction.user.id]
+                        'SELECT balance,workStreak FROM EconomyUserData WHERE userId = ? AND guildId = ?',
+                        [interaction.user.id, interaction.guild.id]
                     )
                 )[0]
+                // If userData is undefined (user not in DB), initialize with defaults
+                if (!userData) {
+                    // Default values: balance 0, workStreak 0
+                    // (other fields are not needed for this subcommand)
+                    userData = { balance: 0, workStreak: 0 }
+                }
                 const lastExecuteEntries = await client.db.query<Pick<EconomyLastExecute, 'work'>>(
-                    'SELECT work FROM EconomyLastExecutes WHERE guildId = ? AND userId = ?',
-                    [interaction.guild.id, interaction.user.id]
+                    'SELECT work FROM EconomyLastExecutes WHERE userId = ? AND guildId = ?',
+                    [interaction.user.id, interaction.guild.id]
                 )
                 const lastExecute = lastExecuteEntries[0]
-                const lastWorkDate = new Date(lastExecute.work)
+                const lastWorkDate = lastExecute ? new Date(lastExecute.work) : new Date(0)
                 const now = new Date()
                 if (lastWorkDate.toDateString() !== now.toDateString()) {
                     const yesterday = new Date(now)
                     yesterday.setDate(yesterday.getDate() - 1)
 
-                    if (lastWorkDate.toDateString() === yesterday.toDateString()) {
+                    if (lastExecute && lastWorkDate.toDateString() === yesterday.toDateString()) {
                         userData.workStreak++
                     } else {
                         userData.workStreak = 1
