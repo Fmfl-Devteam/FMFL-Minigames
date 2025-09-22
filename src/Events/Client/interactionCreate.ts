@@ -149,6 +149,51 @@ export default new EventHandler({
                 }
                 break
             }
+            case interaction.isModalSubmit(): {
+                const modal = client.modals.get(interaction.customId)
+                if (!modal) {
+                    const container = new Container({
+                        components: [
+                            {
+                                type: ComponentType.TextDisplay,
+                                content: '## Error\nThis modal does not exist or has been removed.'
+                            }
+                        ]
+                    }).build()
+                    return void interaction.reply({
+                        components: [container],
+                        flags: ['Ephemeral', 'IsComponentsV2']
+                    })
+                } else {
+                    try {
+                        void modal.execute(interaction, client)
+                    } catch (error) {
+                        const err = error as Error
+                        Logger.error(`Modal "${modal.id}"`, err.message, err.stack ?? '')
+                        const container = new Container({
+                            components: [
+                                {
+                                    type: ComponentType.TextDisplay,
+                                    content:
+                                        '## Error\nThere was an error while executing this modal.'
+                                }
+                            ]
+                        }).build()
+                        if (interaction.replied || interaction.deferred) {
+                            return void interaction.followUp({
+                                components: [container],
+                                flags: ['Ephemeral', 'IsComponentsV2']
+                            })
+                        } else {
+                            return void interaction.reply({
+                                components: [container],
+                                flags: ['Ephemeral', 'IsComponentsV2']
+                            })
+                        }
+                    }
+                }
+                break
+            }
         }
     }
 })
