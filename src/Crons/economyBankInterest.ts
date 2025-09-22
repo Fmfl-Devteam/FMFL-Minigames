@@ -8,7 +8,7 @@ export default class EconomyBankInterestCron extends Cron {
             const interestRate = 0.005 // 0.5% interest rate
             try {
                 await client.db.query(
-                    'UPDATE EconomyUserData SET bankBalance = bankBalance + (bankBalance * ?)',
+                    'UPDATE EconomyUserData SET bankBalance = bankBalance + (bankBalance * ?) WHERE bankBalance > 0',
                     [interestRate]
                 )
             } catch (error) {

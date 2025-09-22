@@ -170,8 +170,8 @@ export default new SlashCommand({
                 }).build()
 
                 await client.db.query(
-                    'INSERT INTO EconomyUserData (userId, guildId, balance, inventory, workStreak) VALUES (?,?,?,?,?) ON DUPLICATE KEY UPDATE balance = balance + VALUES(balance), workStreak = VALUES(workStreak)',
-                    [interaction.user.id, interaction.guild.id, reward, '{}', 0]
+                    'INSERT INTO EconomyUserData (userId, guildId, balance, inventory) VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE balance = balance + VALUES(balance)',
+                    [interaction.user.id, interaction.guild.id, reward, '{}']
                 )
 
                 void interaction.reply({ components: [container], flags: 'IsComponentsV2' })
