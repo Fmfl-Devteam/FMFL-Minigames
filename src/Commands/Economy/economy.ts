@@ -1,4 +1,4 @@
-import { ComponentType, SeparatorSpacingSize, SlashCommandBuilder } from 'discord.js'
+import { ButtonStyle, ComponentType, SeparatorSpacingSize, SlashCommandBuilder } from 'discord.js'
 import { begPhrases, workPhrases } from '../../../Storage/economy_phrases.json'
 import Container from '../../Contents/Classes/Container'
 import { SlashCommand } from '../../Contents/Classes/SlashCommand'
@@ -11,7 +11,8 @@ export default new SlashCommand({
         .setDescription('Economy Commands')
         .addSubcommand((cmd) => cmd.setName('balance').setDescription('Show your balance'))
         .addSubcommand((cmd) => cmd.setName('work').setDescription('Work for a little extra money'))
-        .addSubcommand((cmd) => cmd.setName('beg').setDescription("I'm beggin, beggin you")),
+        .addSubcommand((cmd) => cmd.setName('beg').setDescription("I'm beggin, beggin you"))
+        .addSubcommand((cmd) => cmd.setName('bank').setDescription('Manage your bank account')),
 
     async execute(interaction, client) {
         if (!interaction.inGuild() || !interaction.inCachedGuild()) return
@@ -151,6 +152,49 @@ export default new SlashCommand({
                     'INSERT INTO EconomyUsers (userId, guildId, balance, inventory, workStreak) VALUES (?,?,?,?,?) ON DUPLICATE KEY UPDATE balance = balance + VALUES(balance), workStreak = VALUES(workStreak)',
                     [interaction.user.id, interaction.guild.id, reward, '{}', 0]
                 )
+
+                void interaction.reply({ components: [container], flags: 'IsComponentsV2' })
+                break
+            }
+            case 'bank': {
+                const balance = await client.db.query<Pick<EconomyUserData, 'bankBalance'>>(
+                    'SELECT bankBalance FROM EconomyUsers WHERE userId = ? AND guildId = ?',
+                    [interaction.user.id, interaction.guild.id]
+                )
+
+                const container = new Container({
+                    components: [
+                        {
+                            type: ComponentType.TextDisplay,
+                            content: `## Fmfl Economy\nYour overview of your bank account.`
+                        },
+                        {
+                            type: ComponentType.Separator,
+                            spacing: SeparatorSpacingSize.Small
+                        },
+                        {
+                            type: ComponentType.TextDisplay,
+                            content: `**Bank Balance:** 🪙 ${balance[0].bankBalance}`
+                        },
+                        {
+                            type: ComponentType.ActionRow,
+                            components: [
+                                {
+                                    type: ComponentType.Button,
+                                    label: 'Deposit',
+                                    custom_id: 'economy-bank-deposit',
+                                    style: ButtonStyle.Primary
+                                },
+                                {
+                                    type: ComponentType.Button,
+                                    label: 'Withdraw',
+                                    custom_id: 'economy-bank-withdraw',
+                                    style: ButtonStyle.Primary
+                                }
+                            ]
+                        }
+                    ]
+                }).build()
 
                 void interaction.reply({ components: [container], flags: 'IsComponentsV2' })
                 break

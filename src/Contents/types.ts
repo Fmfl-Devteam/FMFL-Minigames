@@ -14,6 +14,7 @@ export type EconomyUserData = {
     userId: string
     guildId: string
     balance: number
+    bankBalance: number
     inventory: string
     workStreak: number
 }
