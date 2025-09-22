@@ -11,6 +11,9 @@ importers:
       chalk:
         specifier: ^5.6.2
         version: 5.6.2
+      croner:
+        specifier: ^9.1.0
+        version: 9.1.0
       discord.js:
         specifier: ^14.22.1
         version: 14.22.1
@@ -251,6 +254,10 @@ packages:
   chalk@5.6.2:
     resolution: {integrity: sha512-7NzBL0rN6fMUW+f7A6Io4h40qQlG+xGmtMxfbnH/K7TAtt8JQWVQK+6g0UXKMeVJoyV5EkkNsErQ8pVD3bLHbA==}
     engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
+
+  croner@9.1.0:
+    resolution: {integrity: sha512-p9nwwR4qyT5W996vBZhdvBCnMhicY5ytZkR4D1Xj0wuTDEiMnjwR57Q3RXYY/s0EpX6Ay3vgIcfaR+ewGHsi+g==}
+    engines: {node: '>=18.0'}
 
   denque@2.1.0:
     resolution: {integrity: sha512-HVQE3AAb/pxF8fQAoiqpvg9i3evqug3hoiwakOyZAwJm+6vZehbkYXZ0l4JxS+I3QxM97v5aaRNhj8v5oBhekw==}
@@ -509,6 +516,8 @@ snapshots:
   '@vladfrangu/async_event_emitter@2.4.6': {}
 
   chalk@5.6.2: {}
+
+  croner@9.1.0: {}
 
   denque@2.1.0: {}
 
