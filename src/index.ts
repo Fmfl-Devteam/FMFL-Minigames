@@ -3,6 +3,7 @@ import { readdirSync } from 'fs'
 import Button from './Contents/Classes/Button'
 import ChannelSelectMenuInteraction from './Contents/Classes/ChannelSelectMenuInteraction'
 import Logger from './Contents/Classes/Logger'
+import ModalInteraction from './Contents/Classes/ModalInteraction'
 import MyClient from './Contents/Classes/MyClient'
 import { SlashCommand } from './Contents/Classes/SlashCommand'
 import path = require('path')
@@ -29,6 +30,7 @@ const commandFolders = readdirSync(path.join(root, 'Commands'))
 const eventFolders = readdirSync(path.join(root, 'Events'))
 const channelSelectFolders = readdirSync(path.join(root, 'ChannelSelects'))
 const buttonFolders = readdirSync(path.join(root, 'Buttons'))
+const modalFolders = readdirSync(path.join(root, 'Modals'))
 
 ;(async () => {
     for (const subFolder of commandFolders) {
@@ -118,7 +120,24 @@ const buttonFolders = readdirSync(path.join(root, 'Buttons'))
         }
     }
 })()
-
+;(async () => {
+    for (const folder of modalFolders) {
+        const modalFiles = readdirSync(path.join(root, 'Modals', folder))
+        for (const file of modalFiles) {
+            const modal: ModalInteraction = (await import(`./Modals/${folder}/${file}`)).default
+            if (!modal || !modal.id || !modal.execute) {
+                Logger.warn(
+                    'Modal Loader',
+                    `Modal from ${file} is missing at least one of the following properties, so skipped: customId | execute`
+                )
+                continue
+            } else {
+                Logger.info('Modal Loader', `Modal with custom ID ${modal.id} from ${file} loaded!`)
+                client.modals.set(modal.id, modal)
+            }
+        }
+    }
+})()
 client.login(process.env.TOKEN).catch((err) => {
     Logger.error('Client', `Failed to log in: ${err}`)
     process.exit(1)
