@@ -25,6 +25,12 @@ export default new SlashCommand({
                         [interaction.user.id, interaction.guild.id]
                     )
                 )[0]
+                // If userData is undefined (user not in DB), initialize with defaults
+                if (!userData) {
+                    // Default values: balance 0, workStreak 0
+                    // (other fields are not needed for this subcommand)
+                    userData = { balance: 0, workStreak: 0 }
+                }
                 const lastExecuteEntries = await client.db.query<Pick<EconomyLastExecute, 'work'>>(
                     'SELECT work FROM EconomyLastExecutes WHERE userId = ? AND guildId = ?',
                     [interaction.user.id, interaction.guild.id]
