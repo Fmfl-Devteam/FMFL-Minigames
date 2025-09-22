@@ -8,7 +8,7 @@ export default new Button({
     async execute(interaction, client) {
         if (!interaction.inGuild() || !interaction.inCachedGuild()) return
         const userDataEntries = await client.db.query<Pick<EconomyUserData, 'balance'>>(
-            'SELECT balance FROM EconomyUserData WHERE userId = ? AND guildId = ?',
+            'SELECT balance FROM EconomyUsers WHERE userId = ? AND guildId = ?',
             [interaction.user.id, interaction.guild.id]
         )
         const userData = userDataEntries[0]
