@@ -1,0 +1,45 @@
+{
+    "workPhrases": [
+        "You pulled a late shift and earned some extra cash!",
+        "Working hard at the local café paid off with a nice tip!",
+        "Your coding gig cleared your debt and filled your wallet!",
+        "You fixed bugs all day and got rewarded with a bonus!",
+        "You delivered packages in record time and bumped up your balance!",
+        "Your shift at the diner left you with a hefty paycheck!",
+        "You rolled up your sleeves at the hardware store and earned big!",
+        "Late night work transformed into an early morning perk!",
+        "Your efforts at the construction site raised your bank balance!",
+        "A sideline project finally came through with a fat reward!",
+        "Your dog walking gig turned into a profitable afternoon!",
+        "The summer job at the fair paid off better than expected!",
+        "Your tutoring session dug up extra credits in your wallet!",
+        "Volunteering extra hours at the community center brought in some sweet cash!",
+        "Your stint at the bookstore resulted in unexpected bonuses!",
+        "A quick freelance job helped you top up your savings!",
+        "The extra shift at the diner brewed up another paycheck!",
+        "You pulled a double shift and the bonus check came in hot!",
+        "Your weekend gig as a bartender left you with a well-earned tip!"
+    ],
+    "begPhrases": {
+        "gain": [
+            "A kind stranger handed you a few coins after hearing your plea.",
+            "Your heartfelt appeal moved someone to slip you some extra cash.",
+            "Luck was on your side as a passerby offered you a generous tip.",
+            "A compassionate local filled your hat with spare change.",
+            "Your earnest begging was rewarded with a few unexpected dollars.",
+            "A generous passerby not only listened, but also slipped you a bill.",
+            "An empathetic soul dropped a crisp note into your cup as you shared your woes.",
+            "Fortune smiled upon you when an unnoticed benefactor left more than spare change."
+        ],
+        "loss": [
+            "Despite your pleas, most people ignored you, leaving you penniless.",
+            "Your begging went unanswered and you ended up losing what little you had.",
+            "A cunning trickster managed to snatch a few coins right from your hand.",
+            "The harsh reality hit as your desperate cry for help led to more loss than gain.",
+            "In a cruel twist, your attempt to collect spare change left you with an empty cup.",
+            "Despite desperate calls, the weight of rejection left your pockets even emptier.",
+            "Your humble plea was met with dismissive glances, compounding your loss further.",
+            "Even as hope flickered, a selfish shadow stole the last of your coins."
+        ]
+    }
+}
