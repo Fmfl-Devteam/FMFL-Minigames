@@ -1,4 +1,5 @@
 import { Cron } from 'croner'
+import Logger from '../Contents/Classes/Logger'
 import MyClient from '../Contents/Classes/MyClient'
 
 export default class EconomyBankInterestCron extends Cron {
@@ -11,7 +12,12 @@ export default class EconomyBankInterestCron extends Cron {
                     [interestRate]
                 )
             } catch (error) {
-                console.error('Failed to apply bank interest in EconomyBankInterestCron:', error)
+                const err = error as Error
+                Logger.error(
+                    'Failed to apply bank interest in EconomyBankInterestCron:',
+                    err.message,
+                    err.stack || ''
+                )
             }
         })
     }
