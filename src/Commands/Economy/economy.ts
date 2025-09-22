@@ -164,7 +164,7 @@ export default new SlashCommand({
                     components: [
                         {
                             type: ComponentType.TextDisplay,
-                            content: `## Fmfl Economy\n${reward < 0 ? `${begPhrases.loss[Math.floor(Math.random() * begPhrases.loss.length)]}` : `${begPhrases.gain[Math.floor(Math.random() * begPhrases.gain.length)]}`}`
+                            content: `## Fmfl Economy\n${getBegPhrase(reward)}`
                         }
                     ]
                 }).build()
@@ -259,4 +259,14 @@ function calculateBegReward() {
     const reward = Math.floor(Math.random() * (maxBase - minBase + 1)) + minBase
     // 30% chance to lose money instead of gain it
     return Math.random() < 0.3 ? -reward : reward
+}
+
+function getBegPhrase(reward: number) {
+    if (reward < 0) {
+        const lossPhrases = begPhrases.loss
+        return lossPhrases[Math.floor(Math.random() * lossPhrases.length)]
+    } else {
+        const gainPhrases = begPhrases.gain
+        return gainPhrases[Math.floor(Math.random() * gainPhrases.length)]
+    }
 }
