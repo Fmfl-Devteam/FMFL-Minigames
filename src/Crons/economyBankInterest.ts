@@ -11,7 +11,7 @@ export default class EconomyBankInterestCron extends Cron {
                     [interestRate]
                 )
             } catch (error) {
-                console.error('Failed to apply bank interest in EconomyBankInterestCron:', error);
+                console.error('Failed to apply bank interest in EconomyBankInterestCron:', error)
             }
         })
     }

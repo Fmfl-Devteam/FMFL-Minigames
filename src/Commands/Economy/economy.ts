@@ -102,6 +102,21 @@ export default new SlashCommand({
                     )
                 )[0]
 
+                if (!userData) {
+                    const container = new Container({
+                        components: [
+                            {
+                                type: ComponentType.TextDisplay,
+                                content: `## Fmfl Economy\nYou don't have any economy data yet!`
+                            }
+                        ]
+                    }).build()
+                    return void interaction.reply({
+                        components: [container],
+                        flags: 'IsComponentsV2'
+                    })
+                }
+
                 const container = new Container({
                     components: [
                         {
@@ -163,10 +178,28 @@ export default new SlashCommand({
                 break
             }
             case 'bank': {
-                const balance = await client.db.query<Pick<EconomyUserData, 'bankBalance'>>(
-                    'SELECT bankBalance FROM EconomyUserData WHERE userId = ? AND guildId = ?',
-                    [interaction.user.id, interaction.guild.id]
-                )
+                const bankBalanceEntry = await client.db.query<
+                    Pick<EconomyUserData, 'bankBalance'>
+                >('SELECT bankBalance FROM EconomyUserData WHERE userId = ? AND guildId = ?', [
+                    interaction.user.id,
+                    interaction.guild.id
+                ])
+
+                const bankBalance = bankBalanceEntry[0]
+                if (bankBalance === undefined) {
+                    const container = new Container({
+                        components: [
+                            {
+                                type: ComponentType.TextDisplay,
+                                content: `## Fmfl Economy\nYou don't have a Economy account yet! You can create one by using the command \`/economy work\`.`
+                            }
+                        ]
+                    }).build()
+                    return void interaction.reply({
+                        components: [container],
+                        flags: 'IsComponentsV2'
+                    })
+                }
 
                 const container = new Container({
                     components: [
@@ -180,7 +213,7 @@ export default new SlashCommand({
                         },
                         {
                             type: ComponentType.TextDisplay,
-                            content: `**Bank Balance:** 🪙 ${balance[0].bankBalance}`
+                            content: `**Bank Balance:** 🪙 ${bankBalance.bankBalance}`
                         },
                         {
                             type: ComponentType.ActionRow,
