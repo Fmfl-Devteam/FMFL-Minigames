@@ -21,13 +21,13 @@ export default new SlashCommand({
             case 'work': {
                 const userData = (
                     await client.db.query<Pick<EconomyUserData, 'balance' | 'workStreak'>>(
-                        'SELECT balance,workStreak FROM EconomyUsers WHERE guildId = ? AND userId = ?',
-                        [interaction.guild.id, interaction.user.id]
+                        'SELECT balance,workStreak FROM EconomyUsers WHERE userId = ? AND guildId = ?',
+                        [interaction.user.id, interaction.guild.id]
                     )
                 )[0]
                 const lastExecuteEntries = await client.db.query<Pick<EconomyLastExecute, 'work'>>(
-                    'SELECT work FROM EconomyLastExecutes WHERE guildId = ? AND userId = ?',
-                    [interaction.guild.id, interaction.user.id]
+                    'SELECT work FROM EconomyLastExecutes WHERE userId = ? AND guildId = ?',
+                    [interaction.user.id, interaction.guild.id]
                 )
                 const lastExecute = lastExecuteEntries[0]
                 const lastWorkDate = new Date(lastExecute.work)
