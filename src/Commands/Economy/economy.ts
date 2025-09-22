@@ -30,13 +30,13 @@ export default new SlashCommand({
                     [interaction.user.id, interaction.guild.id]
                 )
                 const lastExecute = lastExecuteEntries[0]
-                const lastWorkDate = new Date(lastExecute.work)
+                const lastWorkDate = lastExecute ? new Date(lastExecute.work) : new Date(0)
                 const now = new Date()
                 if (lastWorkDate.toDateString() !== now.toDateString()) {
                     const yesterday = new Date(now)
                     yesterday.setDate(yesterday.getDate() - 1)
 
-                    if (lastWorkDate.toDateString() === yesterday.toDateString()) {
+                    if (lastExecute && lastWorkDate.toDateString() === yesterday.toDateString()) {
                         userData.workStreak++
                     } else {
                         userData.workStreak = 1
