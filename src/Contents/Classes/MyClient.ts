@@ -28,7 +28,7 @@ export default class MyClient extends Client {
         for (const subFolder of commandFolders) {
             const commandFiles = readdirSync(path.join(root, 'Commands', subFolder))
             for (const file of commandFiles) {
-                const command: SlashCommand = (await import(`./Commands/${subFolder}/${file}`))
+                const command: SlashCommand = (await import(`../../Commands/${subFolder}/${file}`))
                     .default
                 if (
                     !command.data ||
@@ -53,7 +53,7 @@ export default class MyClient extends Client {
         for (const folder of eventFolders) {
             const eventFiles = readdirSync(path.join(root, 'Events', folder))
             for (const file of eventFiles) {
-                const event = (await import(`./Events/${folder}/${file}`)).default
+                const event = (await import(`../../Events/${folder}/${file}`)).default
                 if (!event || !event.eventName || !event.execute) {
                     Logger.warn(
                         'Event Loader',
@@ -76,7 +76,7 @@ export default class MyClient extends Client {
             const channelSelectFiles = readdirSync(path.join(root, 'ChannelSelects', folder))
             for (const file of channelSelectFiles) {
                 const channelSelect: ChannelSelectMenuInteraction = (
-                    await import(`./ChannelSelects/${folder}/${file}`)
+                    await import(`../../ChannelSelects/${folder}/${file}`)
                 ).default
                 if (!channelSelect || !channelSelect.id || !channelSelect.execute) {
                     Logger.warn(
@@ -121,7 +121,7 @@ export default class MyClient extends Client {
         for (const folder of modalFolders) {
             const modalFiles = readdirSync(path.join(root, 'Modals', folder))
             for (const file of modalFiles) {
-                const modal: ModalInteraction = (await import(`./Modals/${folder}/${file}`)).default
+                const modal: ModalInteraction = (await import(`../../Modals/${folder}/${file}`)).default
                 if (!modal || !modal.id || !modal.execute) {
                     Logger.warn(
                         'Modal Loader',
