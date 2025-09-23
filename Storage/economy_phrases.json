@@ -29,7 +29,9 @@
             "Your earnest begging was rewarded with a few unexpected dollars.",
             "A generous passerby not only listened, but also slipped you a bill.",
             "An empathetic soul dropped a crisp note into your cup as you shared your woes.",
-            "Fortune smiled upon you when an unnoticed benefactor left more than spare change."
+            "Fortune smiled upon you when an unnoticed benefactor left more than spare change.",
+            "An unexpected admirer left a note with cash, brightening your day further.",
+            "A benevolent stranger, impressed by your sincerity, topped up your funds with extra coins."
         ],
         "loss": [
             "Despite your pleas, most people ignored you, leaving you penniless.",
@@ -39,7 +41,9 @@
             "In a cruel twist, your attempt to collect spare change left you with an empty cup.",
             "Despite desperate calls, the weight of rejection left your pockets even emptier.",
             "Your humble plea was met with dismissive glances, compounding your loss further.",
-            "Even as hope flickered, a selfish shadow stole the last of your coins."
+            "Even as hope flickered, a selfish shadow stole the last of your coins.",
+            "A callous onlooker harshly snatched your remaining change, deepening your despair.",
+            "In the grip of misfortune, a sly figure drained your pockets, leaving nothing behind."
         ]
     }
 }
