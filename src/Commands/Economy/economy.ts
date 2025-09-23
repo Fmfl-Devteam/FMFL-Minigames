@@ -1,4 +1,11 @@
-import { ButtonStyle, ComponentType, SeparatorSpacingSize, SlashCommandBuilder } from 'discord.js'
+import {
+    ApplicationIntegrationType,
+    ButtonStyle,
+    ComponentType,
+    InteractionContextType,
+    SeparatorSpacingSize,
+    SlashCommandBuilder
+} from 'discord.js'
 import { begPhrases, workPhrases } from '../../../Storage/economy_phrases.json'
 import Container from '../../Contents/Classes/Container'
 import { SlashCommand } from '../../Contents/Classes/SlashCommand'
@@ -7,6 +14,8 @@ import { EconomyLastExecute, EconomyUserData } from '../../Contents/types'
 
 export default new SlashCommand({
     data: new SlashCommandBuilder()
+        .setContexts(InteractionContextType.Guild)
+        .setIntegrationTypes(ApplicationIntegrationType.GuildInstall)
         .setName('economy')
         .setDescription('Economy Commands')
         .addSubcommand((cmd) => cmd.setName('balance').setDescription('Show your balance'))
