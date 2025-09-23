@@ -4,7 +4,7 @@ import Container from '../../Contents/Classes/Container'
 import { CountingDatabaseEntry } from '../../Contents/types'
 
 export default new Button({
-    id: 'clear_counting_channel',
+    customId: 'clear_counting_channel',
     async execute(interaction, client) {
         if (!interaction.inCachedGuild() || !interaction.channel) return
         const member = interaction.member as GuildMember

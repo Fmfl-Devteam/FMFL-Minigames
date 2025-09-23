@@ -78,18 +78,18 @@ export default class MyClient extends Client {
                 const channelSelect: ChannelSelectMenuInteraction = (
                     await import(`../../ChannelSelects/${folder}/${file}`)
                 ).default
-                if (!channelSelect || !channelSelect.id || !channelSelect.execute) {
+                if (!channelSelect || !channelSelect.customId || !channelSelect.execute) {
                     Logger.warn(
                         'Channel Select Loader',
-                        `Channel Select from ${file} is missing at least one of the following properties, so skipped: customId | execute`
+                        `Channel Select from ${file} is missing at least one of the following properties, so skipped: customcustomId | execute`
                     )
                     continue
                 } else {
                     Logger.info(
                         'Channel Select Loader',
-                        `Channel Select with custom ID ${channelSelect.id} from ${file} loaded!`
+                        `Channel Select with custom customId ${channelSelect.customId} from ${file} loaded!`
                     )
-                    this.channelSelects.set(channelSelect.id, channelSelect)
+                    this.channelSelects.set(channelSelect.customId, channelSelect)
                 }
             }
         }
@@ -100,18 +100,18 @@ export default class MyClient extends Client {
             const buttonFiles = readdirSync(path.join(root, 'Buttons', folder))
             for (const file of buttonFiles) {
                 const button: Button = (await import(`../../Buttons/${folder}/${file}`)).default
-                if (!button || !button.id || !button.execute) {
+                if (!button || !button.customId || !button.execute) {
                     Logger.warn(
                         'Button Loader',
-                        `Button from ${file} is missing at least one of the following properties, so skipped: customId | execute`
+                        `Button from ${file} is missing at least one of the following properties, so skipped: customcustomId | execute`
                     )
                     continue
                 } else {
                     Logger.info(
                         'Button Loader',
-                        `Button with custom ID ${button.id} from ${file} loaded!`
+                        `Button with custom customId ${button.customId} from ${file} loaded!`
                     )
-                    this.buttons.set(button.id, button)
+                    this.buttons.set(button.customId, button)
                 }
             }
         }
@@ -121,19 +121,20 @@ export default class MyClient extends Client {
         for (const folder of modalFolders) {
             const modalFiles = readdirSync(path.join(root, 'Modals', folder))
             for (const file of modalFiles) {
-                const modal: ModalInteraction = (await import(`../../Modals/${folder}/${file}`)).default
-                if (!modal || !modal.id || !modal.execute) {
+                const modal: ModalInteraction = (await import(`../../Modals/${folder}/${file}`))
+                    .default
+                if (!modal || !modal.customId || !modal.execute) {
                     Logger.warn(
                         'Modal Loader',
-                        `Modal from ${file} is missing at least one of the following properties, so skipped: customId | execute`
+                        `Modal from ${file} is missing at least one of the following properties, so skipped: customcustomId | execute`
                     )
                     continue
                 } else {
                     Logger.info(
                         'Modal Loader',
-                        `Modal with custom ID ${modal.id} from ${file} loaded!`
+                        `Modal with custom customId ${modal.customId} from ${file} loaded!`
                     )
-                    this.modals.set(modal.id, modal)
+                    this.modals.set(modal.customId, modal)
                 }
             }
         }

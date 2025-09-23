@@ -4,7 +4,7 @@ import Container from '../../Contents/Classes/Container'
 import COLORS from '../../Contents/Constants/COLORS'
 
 export default new ChannelSelectMenuInteraction({
-    id: 'setup_counting_channel',
+    customId: 'setup_counting_channel',
     async execute(interaction, client) {
         if (!interaction.inCachedGuild()) return
         const channelid = interaction.values[0]
