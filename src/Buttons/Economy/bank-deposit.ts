@@ -3,7 +3,7 @@ import Button from '../../Contents/Classes/Button'
 import { EconomyUserData } from '../../Contents/types'
 
 export default new Button({
-    id: 'economy-bank-deposit',
+    customId: 'economy-bank-deposit',
 
     async execute(interaction, client) {
         if (!interaction.inGuild() || !interaction.inCachedGuild()) return

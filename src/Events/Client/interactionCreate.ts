@@ -75,7 +75,7 @@ export default new EventHandler({
                     } catch (error) {
                         const err = error as Error
                         Logger.error(
-                            `Channel Select Menu "${channelSelect.id}"`,
+                            `Channel Select Menu "${channelSelect.customId}"`,
                             err.message,
                             err.stack ?? ''
                         )
@@ -124,7 +124,7 @@ export default new EventHandler({
                         void button.execute(interaction, client)
                     } catch (error) {
                         const err = error as Error
-                        Logger.error(`Button "${button.id}"`, err.message, err.stack ?? '')
+                        Logger.error(`Button "${button.customId}"`, err.message, err.stack ?? '')
                         const container = new Container({
                             components: [
                                 {
@@ -169,7 +169,7 @@ export default new EventHandler({
                         void modal.execute(interaction, client)
                     } catch (error) {
                         const err = error as Error
-                        Logger.error(`Modal "${modal.id}"`, err.message, err.stack ?? '')
+                        Logger.error(`Modal "${modal.customId}"`, err.message, err.stack ?? '')
                         const container = new Container({
                             components: [
                                 {

@@ -2,7 +2,7 @@ import ModalInteraction from '../../Contents/Classes/ModalInteraction'
 import { EconomyUserData } from '../../Contents/types'
 
 export default new ModalInteraction({
-    id: 'economy-bank-withdraw',
+    customId: 'economy-bank-withdraw',
 
     async execute(interaction, client) {
         if (!interaction.inGuild() || !interaction.inCachedGuild()) return

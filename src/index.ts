@@ -83,7 +83,7 @@ const modalFolders = readdirSync(path.join(root, 'Modals'))
             const channelSelect: ChannelSelectMenuInteraction = (
                 await import(`./ChannelSelects/${folder}/${file}`)
             ).default
-            if (!channelSelect || !channelSelect.id || !channelSelect.execute) {
+            if (!channelSelect || !channelSelect.customId || !channelSelect.execute) {
                 Logger.warn(
                     'Channel Select Loader',
                     `Channel Select from ${file} is missing at least one of the following properties, so skipped: customId | execute`
@@ -92,9 +92,9 @@ const modalFolders = readdirSync(path.join(root, 'Modals'))
             } else {
                 Logger.info(
                     'Channel Select Loader',
-                    `Channel Select with custom ID ${channelSelect.id} from ${file} loaded!`
+                    `Channel Select with custom ID ${channelSelect.customId} from ${file} loaded!`
                 )
-                client.channelSelects.set(channelSelect.id, channelSelect)
+                client.channelSelects.set(channelSelect.customId, channelSelect)
             }
         }
     }
@@ -104,7 +104,7 @@ const modalFolders = readdirSync(path.join(root, 'Modals'))
         const buttonFiles = readdirSync(path.join(root, 'Buttons', folder))
         for (const file of buttonFiles) {
             const button: Button = (await import(`./Buttons/${folder}/${file}`)).default
-            if (!button || !button.id || !button.execute) {
+            if (!button || !button.customId || !button.execute) {
                 Logger.warn(
                     'Button Loader',
                     `Button from ${file} is missing at least one of the following properties, so skipped: customId | execute`
@@ -113,9 +113,9 @@ const modalFolders = readdirSync(path.join(root, 'Modals'))
             } else {
                 Logger.info(
                     'Button Loader',
-                    `Button with custom ID ${button.id} from ${file} loaded!`
+                    `Button with custom ID ${button.customId} from ${file} loaded!`
                 )
-                client.buttons.set(button.id, button)
+                client.buttons.set(button.customId, button)
             }
         }
     }
@@ -125,15 +125,18 @@ const modalFolders = readdirSync(path.join(root, 'Modals'))
         const modalFiles = readdirSync(path.join(root, 'Modals', folder))
         for (const file of modalFiles) {
             const modal: ModalInteraction = (await import(`./Modals/${folder}/${file}`)).default
-            if (!modal || !modal.id || !modal.execute) {
+            if (!modal || !modal.customId || !modal.execute) {
                 Logger.warn(
                     'Modal Loader',
                     `Modal from ${file} is missing at least one of the following properties, so skipped: customId | execute`
                 )
                 continue
             } else {
-                Logger.info('Modal Loader', `Modal with custom ID ${modal.id} from ${file} loaded!`)
-                client.modals.set(modal.id, modal)
+                Logger.info(
+                    'Modal Loader',
+                    `Modal with custom ID ${modal.customId} from ${file} loaded!`
+                )
+                client.modals.set(modal.customId, modal)
             }
         }
     }
