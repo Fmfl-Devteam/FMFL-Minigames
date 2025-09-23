@@ -99,7 +99,7 @@ export default class MyClient extends Client {
         for (const folder of buttonFolders) {
             const buttonFiles = readdirSync(path.join(root, 'Buttons', folder))
             for (const file of buttonFiles) {
-                const button: Button = (await import(`./Buttons/${folder}/${file}`)).default
+                const button: Button = (await import(`../../Buttons/${folder}/${file}`)).default
                 if (!button || !button.id || !button.execute) {
                     Logger.warn(
                         'Button Loader',
