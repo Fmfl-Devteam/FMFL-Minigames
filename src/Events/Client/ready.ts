@@ -7,6 +7,7 @@ export default new EventHandler({
 
     execute(client) {
         Logger.info('Ready Event', `Client is online as ${client.user?.tag}`)
+        client.application?.commands.set(client.slashCommands.map((c) => c.data))
 
         new EconomyBankInterestCron(client)
     }
