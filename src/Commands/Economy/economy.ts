@@ -81,7 +81,7 @@ export default new SlashCommand({
 
                 await client.db.query(
                     'INSERT INTO EconomyLastExecutes (userId, guildId, work) VALUES (?,?,?) ON DUPLICATE KEY UPDATE work = VALUES(work)',
-                    [interaction.user.id, interaction.guild.id, now.getTime()]
+                    [interaction.user.id, interaction.guild.id, now.getTime().toString()]
                 )
 
                 const container = new Container({
@@ -111,8 +111,8 @@ export default new SlashCommand({
                 )
                 const lastExecute = lastExecuteEntries[0]
                 const now = Date.now()
-                if (lastExecute && now - lastExecute.crime < COOLDOWNS.crime) {
-                    const remaining = COOLDOWNS.crime - (now - lastExecute.crime)
+                if (lastExecute && now - Number(lastExecute.crime) < COOLDOWNS.crime) {
+                    const remaining = COOLDOWNS.crime - (now - Number(lastExecute.crime))
                     const minutes = Math.floor(remaining / 60_000)
                     const seconds = Math.floor((remaining % 60_000) / 1000)
                     const container = new Container({
@@ -193,8 +193,8 @@ export default new SlashCommand({
                 )
                 const lastExecute = lastExecuteEntries[0]
                 const now = Date.now()
-                if (lastExecute && now - lastExecute.beg < COOLDOWNS.beg) {
-                    const remaining = COOLDOWNS.beg - (now - lastExecute.beg)
+                if (lastExecute && now - Number(lastExecute.beg) < COOLDOWNS.beg) {
+                    const remaining = COOLDOWNS.beg - (now - Number(lastExecute.beg))
                     const minutes = Math.floor(remaining / 60_000)
                     const seconds = Math.floor((remaining % 60_000) / 1000)
                     const container = new Container({
