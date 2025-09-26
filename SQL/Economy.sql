@@ -12,7 +12,7 @@ CREATE TABLE `EconomyLastExecutes` (
   `userId` varchar(25) NOT NULL,
   `guildId` varchar(25) NOT NULL,
   `work` varchar(25) NOT NULL DEFAULT '0',
-  `beg` varchar(11) NOT NULL DEFAULT '0',
-  `crime` varchar(11) NOT NULL DEFAULT '0',
+  `beg` varchar(25) NOT NULL DEFAULT '0',
+  `crime` varchar(25) NOT NULL DEFAULT '0',
   PRIMARY KEY (`userId`,`guildId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci
