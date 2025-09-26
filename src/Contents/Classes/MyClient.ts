@@ -1,13 +1,13 @@
 import { Client, ClientOptions, Collection } from 'discord.js'
 import { readdirSync } from 'fs'
 import { PoolConfig } from 'mariadb/*'
+import * as path from 'path'
 import Button from './Button'
 import ChannelSelectMenuInteraction from './ChannelSelectMenuInteraction'
 import DatabaseController from './DatabaseController'
 import Logger from './Logger'
 import ModalInteraction from './ModalInteraction'
 import { SlashCommand } from './SlashCommand'
-import path = require('path')
 
 export default class MyClient extends Client {
     public slashCommands: Collection<string, SlashCommand> = new Collection()

@@ -1,9 +1,10 @@
 import { GatewayIntentBits } from 'discord.js'
 import { readdirSync } from 'fs'
+import * as path from 'path'
 import Logger from './Contents/Classes/Logger'
 import MyClient from './Contents/Classes/MyClient'
-import path = require('path')
-let root = process.argv[0].endsWith('.js') ? 'dist' : 'src'
+let root = process.argv[1].endsWith('.js') ? 'dist' : 'src'
+console.log(root)
 process.loadEnvFile('.env')
 const client = new MyClient({
     clientOptions: {

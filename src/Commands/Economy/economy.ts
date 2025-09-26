@@ -6,7 +6,7 @@ import {
     SeparatorSpacingSize,
     SlashCommandBuilder
 } from 'discord.js'
-import { begPhrases, workPhrases } from '../../../Storage/economy_phrases.json'
+import phrases from '../../../Storage/economy_phrases.json'
 import Container from '../../Contents/Classes/Container'
 import { SlashCommand } from '../../Contents/Classes/SlashCommand'
 import COOLDOWNS from '../../Contents/Constants/COOLDOWNS'
@@ -73,7 +73,8 @@ export default new SlashCommand({
                     })
                 }
                 const salary = calculateWorkReward(userData.workStreak)
-                const workPhrase = workPhrases[Math.floor(Math.random() * workPhrases.length)]
+                const workPhrase =
+                    phrases.workPhrases[Math.floor(Math.random() * phrases.workPhrases.length)]
                 await client.db.query(
                     'INSERT INTO EconomyUserData (userId, guildId, balance, inventory, workStreak) VALUES (?,?,?,?,?) ON DUPLICATE KEY UPDATE balance = balance + VALUES(balance), workStreak = VALUES(workStreak)',
                     [interaction.user.id, interaction.guild.id, salary, '{}', userData.workStreak]
@@ -336,10 +337,10 @@ function calculateCrimeReward() {
 
 function getBegPhrase(reward: number) {
     if (reward < 0) {
-        const lossPhrases = begPhrases.loss
+        const lossPhrases = phrases.begPhrases.loss
         return lossPhrases[Math.floor(Math.random() * lossPhrases.length)]
     } else {
-        const gainPhrases = begPhrases.gain
+        const gainPhrases = phrases.begPhrases.gain
         return gainPhrases[Math.floor(Math.random() * gainPhrases.length)]
     }
 }
