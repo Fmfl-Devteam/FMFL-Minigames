@@ -19,7 +19,8 @@ const client = new MyClient({
         port: Number(process.env.DATABASE_PORT) || 3306,
         user: process.env.DATABASE_USER,
         password: process.env.DATABASE_PASSWORD,
-        database: process.env.DATABASE_NAME
+        database: process.env.DATABASE_NAME,
+        allowPublicKeyRetrieval: true
     }
 })
 const commandFolders = readdirSync(path.join(root, 'Commands'))
