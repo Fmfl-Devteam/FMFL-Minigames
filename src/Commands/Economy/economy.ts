@@ -46,7 +46,7 @@ export default new SlashCommand({
                     [interaction.user.id, interaction.guild.id]
                 )
                 const lastExecute = lastExecuteEntries[0]
-                const lastWorkDate = lastExecute ? new Date(lastExecute.work) : new Date(0)
+                const lastWorkDate = lastExecute ? new Date(Number(lastExecute.work)) : new Date(0)
                 const now = new Date()
                 if (lastWorkDate.toDateString() !== now.toDateString()) {
                     const yesterday = new Date(now)
@@ -222,6 +222,14 @@ export default new SlashCommand({
                         {
                             type: ComponentType.TextDisplay,
                             content: `## Fmfl Economy\n${getBegPhrase(reward)}`
+                        },
+                        {
+                            type: ComponentType.Separator,
+                            spacing: SeparatorSpacingSize.Small
+                        },
+                        {
+                            type: ComponentType.TextDisplay,
+                            content: `You ${reward < 0 ? 'lost' : 'gained'} 🪙 ${Math.abs(reward)}!`
                         }
                     ]
                 }).build()

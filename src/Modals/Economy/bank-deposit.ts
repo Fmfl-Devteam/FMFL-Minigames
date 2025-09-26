@@ -1,3 +1,5 @@
+import { ButtonStyle, ComponentType, SeparatorSpacingSize } from 'discord.js'
+import Container from '../../Contents/Classes/Container'
 import ModalInteraction from '../../Contents/Classes/ModalInteraction'
 import { EconomyUserData } from '../../Contents/types'
 
@@ -5,7 +7,8 @@ export default new ModalInteraction({
     customId: 'economy-bank-deposit',
 
     async execute(interaction, client) {
-        if (!interaction.inGuild() || !interaction.inCachedGuild()) return
+        if (!interaction.inGuild() || !interaction.inCachedGuild() || !interaction.isFromMessage())
+            return
         const amount = interaction.fields.getTextInputValue('amount')
         const depositAmount = parseInt(amount)
 
@@ -43,9 +46,40 @@ export default new ModalInteraction({
             [depositAmount, depositAmount, interaction.user.id, interaction.guild.id]
         )
 
-        return void interaction.reply({
-            content: `Successfully deposited ${depositAmount} coins into your bank.`,
-            flags: 'Ephemeral'
-        })
+        const container = new Container({
+            components: [
+                {
+                    type: ComponentType.TextDisplay,
+                    content: `## Fmfl Economy\nYour overview of your bank account.`
+                },
+                {
+                    type: ComponentType.Separator,
+                    spacing: SeparatorSpacingSize.Small
+                },
+                {
+                    type: ComponentType.TextDisplay,
+                    content: `**Bank Balance:** 🪙 ${userData.bankBalance + depositAmount}`
+                },
+                {
+                    type: ComponentType.ActionRow,
+                    components: [
+                        {
+                            type: ComponentType.Button,
+                            label: 'Deposit',
+                            custom_id: 'economy-bank-deposit',
+                            style: ButtonStyle.Primary
+                        },
+                        {
+                            type: ComponentType.Button,
+                            label: 'Withdraw',
+                            custom_id: 'economy-bank-withdraw',
+                            style: ButtonStyle.Primary
+                        }
+                    ]
+                }
+            ]
+        }).build()
+
+        await interaction.update({ components: [container] })
     }
 })
