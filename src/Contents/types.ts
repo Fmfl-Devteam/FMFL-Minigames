@@ -21,7 +21,7 @@ export type EconomyUserData = {
 export type EconomyLastExecute = {
     userId: string
     guildId: string
-    beg: number
-    work: number
-    crime: number
+    beg: string
+    work: string
+    crime: string
 }
