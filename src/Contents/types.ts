@@ -25,3 +25,8 @@ export type EconomyLastExecute = {
     work: string
     crime: string
 }
+
+export type TrueOrFalseDatabaseEntry = {
+    guildId: string
+    channelId: string
+}

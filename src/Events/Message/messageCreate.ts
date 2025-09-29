@@ -1,7 +1,7 @@
 import { ComponentType } from 'discord.js'
 import Container from '../../Contents/Classes/Container'
 import EventHandler from '../../Contents/Classes/EventHandler'
-import { CountingDatabaseEntry } from '../../Contents/types'
+import { CountingDatabaseEntry, TrueOrFalseDatabaseEntry } from '../../Contents/types'
 
 export default new EventHandler({
     eventName: 'messageCreate',
@@ -13,6 +13,12 @@ export default new EventHandler({
                 [message.guild.id]
             )
         )[0]?.channelId
+
+        const trueOrFalseChannelEntry = await client.db.query<
+            Pick<TrueOrFalseDatabaseEntry, 'channelId'>
+        >('SELECT channelId FROM true_or_false_settings WHERE guildId = ?', [message.guild.id])
+        const trueOrFalseChannelId = trueOrFalseChannelEntry[0]?.channelId
+
         // Counting Minigame
         if (message.channel.id == countingChannelId && !message.author.bot) {
             if (client.activeServices.get('countingClear')) return
@@ -72,6 +78,9 @@ export default new EventHandler({
                     void message.reply({ components: [container], flags: 'IsComponentsV2' })
                 }
             }
+        } else if (message.channel.id == trueOrFalseChannelId && !message.author.bot) {
+            await message.react('✅')
+            await message.react('❌')
         }
     }
 })

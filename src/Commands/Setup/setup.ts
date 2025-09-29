@@ -18,7 +18,10 @@ export default new SlashCommand({
         .setIntegrationTypes(ApplicationIntegrationType.GuildInstall)
         .setName('setup')
         .setDescription('Set up the bot for this server')
-        .addSubcommand((cmd) => cmd.setName('counting').setDescription('Set up the counting game')),
+        .addSubcommand((cmd) => cmd.setName('counting').setDescription('Set up the counting game'))
+        .addSubcommand((cmd) =>
+            cmd.setName('true-or-false').setDescription('Set up the true or false game')
+        ),
 
     async execute(interaction, client) {
         const subcommand = interaction.options.getSubcommand()
@@ -56,6 +59,43 @@ export default new SlashCommand({
                     components: [container],
                     flags: ['Ephemeral', 'IsComponentsV2']
                 })
+                break
+            }
+            case 'true-or-false': {
+                const container = new Container({
+                    accent_color: COLORS.fmfl_blue,
+                    components: [
+                        {
+                            type: ComponentType.TextDisplay,
+                            content:
+                                '## True or False Minigame Setup\nPlease select the channel you want to use for the true or false game.\n' +
+                                'Users can send Messages in the specified channel and the community will vote if the statement is true or false.'
+                        },
+                        {
+                            type: ComponentType.Separator,
+                            spacing: SeparatorSpacingSize.Small
+                        },
+                        {
+                            type: ComponentType.ActionRow,
+                            components: [
+                                {
+                                    type: ComponentType.ChannelSelect,
+                                    custom_id: 'setup_true_or_false_channel',
+                                    channel_types: [ChannelType.GuildText],
+                                    required: true,
+                                    placeholder: 'Select the channel for the true or false game',
+                                    max_values: 1
+                                }
+                            ]
+                        }
+                    ]
+                }).build()
+
+                void interaction.reply({
+                    components: [container],
+                    flags: ['Ephemeral', 'IsComponentsV2']
+                })
+                break
             }
         }
     }
